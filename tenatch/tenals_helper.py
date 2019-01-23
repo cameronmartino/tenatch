@@ -2,7 +2,7 @@ import numpy as np
 from numpy.random import randn
 from numpy.linalg import norm
 
-def TenAls(TE, E, r = 2, ninit = 50, nitr = 50, tol = 1e-8):
+def tenals(TE, E, r = 2, ninit = 50, nitr = 50, tol = 1e-8):
     
     #start
     n1,n2,n3 = TE.shape
@@ -39,10 +39,7 @@ def TenAls(TE, E, r = 2, ninit = 50, nitr = 50, tol = 1e-8):
     V2 = U02.copy()
     V3 = U03.copy()
     S = S0.copy()
-    for itr1 in range(nitr):
-        V1_=V1.copy()
-        V2_=V2.copy()
-        V3_=V3.copy()
+    for itrs in range(nitr):
         for q in range(r):
             S_ = S.copy()
             S_[q] = 0 
@@ -67,7 +64,8 @@ def TenAls(TE, E, r = 2, ninit = 50, nitr = 50, tol = 1e-8):
             v2 = V2[:,q].reshape(den2.shape[0],1)/den2
             v2 = v2/norm(v2) 
             for i3 in range(n3):
-                V3[i3,q] = (np.matmul(v1.T,np.matmul(TE[:,:,i3]-A[:,:,i3],v2))/np.matmul(np.matmul((v1*v1).T,(E[:,:,i3])),(v2*v2))).flatten()        # TODO: check for nans or zero estimates here 
+                V3[i3,q] = (np.matmul(v1.T,np.matmul(TE[:,:,i3]-A[:,:,i3],v2))/np.matmul(np.matmul((v1*v1).T,(E[:,:,i3])),(v2*v2))).flatten()        
+                # TODO: check for nans or zero estimates here 
             V1[:,q] = v1.flatten()
             V2[:,q] = v2.flatten()
             S[q] = norm(V3[:,q])
